@@ -1,25 +1,38 @@
 # -*- coding: utf-8 -*-
-import logging
+import scrapy
+from bs4 import BeautifulSoup
+from scrapy.spiders import CrawlSpider
 
-from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import CrawlSpider, Rule
+from proxylist.proxylist.items import IPlistItem
 
-logger = logging.getLogger('spider.xici')
+
+def parse_ip_list(response):
+    item = IPlistItem()
+    html_ip_list = response.css('#ip_list').get()
+    soup = BeautifulSoup(html_ip_list, 'html.parser')
+    return item
 
 
 class XicidailiSpider(CrawlSpider):
     name = 'xicidaili'
     allowed_domains = ['xicidaili.com']
-    start_urls = ['https://www.xicidaili.com/nn', 'https://www.xicidaili.com/wt/']
+    start_urls = ['https://www.xicidaili.com/nn']
 
-    rules = (
-        Rule(LinkExtractor(allow=r'Items/'), callback='parse_item', follow=True),
-    )
+    current_page = 1
 
-    def parse_item(self, response):
-        item = {}
-        # item['domain_id'] = response.xpath('//input[@id="sid"]/@value').get()
-        # item['name'] = response.xpath('//div[@id="name"]').get()
-        # item['description'] = response.xpath('//div[@id="description"]').get()
-        logger.info(response.status)
-        return item
+    def parse(self, response):
+        self.parse_pagination(response)
+        return parse_ip_list(response)
+
+    def parse_pagination(self, response):
+        html_pagination = response.css('.pagination').get()
+        soup = BeautifulSoup(html_pagination, 'html.parser')
+
+        total_pages = soup.select('.next_page')[0].find_previous_sibling().get_text()
+
+        self.logger.info(total_pages)
+
+        self.current_page = self.current_page + 1
+        if self.current_page < int(total_pages):
+            scrapy.Request('https://www.xicidaili.com/nn/%i' % self.current_page, self.parse)
+            self.logger.info('https://www.xicidaili.com/nn/%i' % self.current_page)

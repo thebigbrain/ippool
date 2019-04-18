@@ -8,7 +8,9 @@
 import scrapy
 
 
-class ProxylistItem(scrapy.Item):
+class IPlistItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    ip = scrapy.Field()
+    port = scrapy.Field()
+    scheme = scrapy.Field()
+    location = scrapy.Field()
