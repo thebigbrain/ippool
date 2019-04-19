@@ -42,7 +42,7 @@ def parse_ip_list(response):
         item = IPlistItem()
         item['ip'] = td[1].get_text()
         item['port'] = td[2].get_text()
-        item['location'] = td[3].get_text()
+        item['location'] = td[3].get_text().replace('\n', '')
         item['protocol'] = td[5].get_text()
         items.append(item)
     return items
