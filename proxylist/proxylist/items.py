@@ -12,5 +12,5 @@ class IPlistItem(scrapy.Item):
     # define the fields for your item here like:
     ip = scrapy.Field()
     port = scrapy.Field()
-    scheme = scrapy.Field()
+    protocol = scrapy.Field()
     location = scrapy.Field()
