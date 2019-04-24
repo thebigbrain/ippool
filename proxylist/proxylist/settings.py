@@ -14,6 +14,9 @@ BOT_NAME = 'proxylist'
 SPIDER_MODULES = ['proxylist.spiders']
 NEWSPIDER_MODULE = 'proxylist.spiders'
 
+ES_HOST = '192.168.99.100'
+ES_PORT = 9200
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'proxylist (+http://www.yourdomain.com)'
 
@@ -63,9 +66,10 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-# ITEM_PIPELINES = {
-#    'proxylist.pipelines.ProxylistPipeline': 300,
-# }
+ITEM_PIPELINES = {
+    # 'proxylist.pipelines.ProxylistPipeline': 300,
+    'proxylist.pipelines.ElasticSearchPipeline': 301
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
