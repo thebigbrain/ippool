@@ -1,0 +1,6 @@
+name: ippool
+
+dependencies:
+  scrapy: ^0.0.2
+  key_value_store_web: ^1.0.0
+  html: ^0.14.0+2
