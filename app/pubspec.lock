@@ -36,20 +36,20 @@ packages:
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
     version: "0.14.0+2"
-  key_value_store:
-    dependency: transitive
-    description:
-      name: key_value_store
-      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
-    source: hosted
-    version: "1.0.0"
-  key_value_store_web:
+  leveldb:
     dependency: "direct main"
     description:
-      name: key_value_store_web
+      name: leveldb
       url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
     source: hosted
-    version: "1.0.0"
+    version: "6.0.1"
+  meta:
+    dependency: transitive
+    description:
+      name: meta
+      url: "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
+    source: hosted
+    version: "1.1.7"
   path:
     dependency: transitive
     description:
