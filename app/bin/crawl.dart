@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:html/parser.dart' show parse;
+import 'package:ippool/items.dart';
 import 'package:leveldb/leveldb.dart';
 import 'package:scrapy/scrapy.dart';
-
-import 'items.dart';
 
 class IppoolSpider extends Spider<IpProxy, IpProxies> {
   LevelDB<String, String> db;
