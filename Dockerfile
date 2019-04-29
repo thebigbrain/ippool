@@ -12,7 +12,8 @@ ENV PUB_HOSTED_URL "https://mirrors.tuna.tsinghua.edu.cn/dart-pub/"
 ADD pubspec.* /app/
 RUN pub get
 
-ADD ./bin /app
-ADD ./lib /app
+ADD . /app
 
 RUN pub get --offline
+
+ENTRYPOINT ["/usr/bin/dart", "/app/bin/crawl.dart"]
