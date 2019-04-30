@@ -3,7 +3,7 @@ import sys
 
 from scrapy.crawler import CrawlerProcess
 
-from proxylist.proxylist.spiders.xicidaili import XicidailiSpider
+from proxylist.spiders.xicidaili import XicidailiSpider
 
 
 class UserAgent:
