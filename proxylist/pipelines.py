@@ -7,6 +7,8 @@
 
 from elasticsearch import Elasticsearch
 
+from leveldb.db import LevelDB
+
 
 class ElasticSearchPipeline(object):
     def __init__(self, host, port):
@@ -28,4 +30,24 @@ class ElasticSearchPipeline(object):
     def process_item(self, item, spider):
         doc_id = item['ip'] + ':' + item['port']
         self.es.index(index='ippool', doc_type=item['protocol'], id=doc_id, body=item)
+        return item
+
+
+class LevelDBPipeline(object):
+    def __init__(self, filename):
+        self.filename = filename
+        self.db = None
+
+    @classmethod
+    def from_cralwer(cls, cralwer):
+        return cls(filename=cralwer.settings.LEVELDB_FILENAME)
+
+    def open_spider(self):
+        self.db = LevelDB.open(self.filename)
+
+    def close_spider(self):
+        self.db.close()
+
+    def process_item(self, item, spider):
+        print('item', item)
         return item

@@ -17,6 +17,8 @@ NEWSPIDER_MODULE = 'proxylist.spiders'
 ES_HOST = '192.168.99.100'
 ES_PORT = 9200
 
+LEVELDB_FILENAME = '/data/leveldb/ippool.ldb'
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 # USER_AGENT = 'proxylist (+http://www.yourdomain.com)'
 
@@ -68,7 +70,8 @@ ROBOTSTXT_OBEY = True
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     # 'proxylist.pipelines.ProxylistPipeline': 300,
-    'proxylist.pipelines.ElasticSearchPipeline': 301
+    # 'proxylist.pipelines.ElasticSearchPipeline': 301,
+    'proxylist.pipelines.LevelDBPipeline': 301
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

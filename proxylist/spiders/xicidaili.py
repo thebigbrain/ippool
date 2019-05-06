@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import time
+
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy.spiders import CrawlSpider
@@ -62,6 +64,7 @@ class XicidailiSpider(CrawlSpider):
             yield item
 
         has_more = self.parse_pagination(response)
+        time.sleep(5)
         if has_more:
             yield scrapy.Request('https://www.xicidaili.com/nn/%i' % self.current_page, self.parse)
 
