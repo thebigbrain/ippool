@@ -15,7 +15,14 @@ def deserialize(b):
     return pickle.loads(b)
 
 
+class LevelDBStatus:
+    OPENED = 1
+    CLOSED = 2
+
+
 class LevelDB(EventDispatcher):
+    status = None
+
     def __init__(self, file, options):
         super().__init__()
 
@@ -28,15 +35,18 @@ class LevelDB(EventDispatcher):
 
         self.buffer = dict()
 
-        self.add_listener('flush', self.on_flush)
+        self.add_listener('flush', self.do_flush)
+
+        self.status = LevelDBStatus.OPENED
 
     @classmethod
     def open(cls, file_name, options=None):
-        file = open(file_name, 'ra')
+        file = open(file_name, 'a+b')
         return cls(file, options)
 
     def init(self):
         for line in self.file:
+            print(line)
             self.lines.update(deserialize(line))
 
     def get(self, key):
@@ -45,13 +55,15 @@ class LevelDB(EventDispatcher):
     def put(self, key, value):
         self.buffer[key] = value
 
-    def on_flush(self):
+    def do_flush(self):
         self.lines.update(self.buffer)
         buffer = []
         for (k, v) in self.buffer.items():
-            buffer[k] = v
+            buffer.append(serialize({k: v}))
         self.file.writelines(buffer)
         self.buffer.clear()
 
     def close(self):
+        self.status = LevelDBStatus.CLOSED
+        self.do_flush()
         self.file.close()
