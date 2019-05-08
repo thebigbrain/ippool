@@ -2,19 +2,13 @@
 import sys
 
 from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
 
 from proxylist.spiders.xicidaili import XicidailiSpider
 
 
-class UserAgent:
-    chrome = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
-             'Chrome/73.0.3683.103 Safari/537.36'
-
-
 def main(argv):
-    process = CrawlerProcess({
-        'USER_AGENT': UserAgent.chrome
-    })
+    process = CrawlerProcess(get_project_settings())
 
     process.crawl(XicidailiSpider)
     process.start()  # the script will block here until the crawling is finished

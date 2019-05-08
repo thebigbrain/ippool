@@ -4,6 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
+import hashlib
 
 from elasticsearch import Elasticsearch
 
@@ -49,5 +50,11 @@ class LevelDBPipeline(object):
         self.db.close()
 
     def process_item(self, item, spider):
-        print('item', item)
+        key = LevelDBPipeline.md5(item)
+        self.db.put(key, item)
+        print('process item')
         return item
+
+    @staticmethod
+    def md5(item):
+        return hashlib.md5(':'.join([item.protocol, item.ip, item.port])).digest()

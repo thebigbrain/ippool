@@ -14,8 +14,6 @@ class LevelDBTest(unittest.TestCase):
     def test_get_put(self):
         ldb = LevelDB.open('../data/test.ldb')
 
-        test = ldb.get('test')
-        self.assertFalse(test)
         ldb.put('test', 'hello')
         self.assertEqual('hello', ldb.get('test'))
 
@@ -23,8 +21,7 @@ class LevelDBTest(unittest.TestCase):
 
     def test_read(self):
         ldb = LevelDB.open('../data/test.ldb')
-        print(ldb.lines, ldb.file.readlines())
-        # self.assertEqual('hello', ldb.get('test'))
+        self.assertEqual('hello', ldb.get('test'))
         ldb.close()
 
 

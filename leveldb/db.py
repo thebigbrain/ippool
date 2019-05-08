@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import os
 import pickle
 
 from whistle import EventDispatcher
@@ -20,6 +21,10 @@ class LevelDBStatus:
     CLOSED = 2
 
 
+class LevelDBEvent:
+    FLUSH = 'flush'
+
+
 class LevelDB(EventDispatcher):
     status = None
 
@@ -30,12 +35,12 @@ class LevelDB(EventDispatcher):
         self._conf = options
 
         self.lines = dict()
+        self.current_pos = 0
         self.init()
-        self.current_pos = self.file.tell()
 
         self.buffer = dict()
 
-        self.add_listener('flush', self.do_flush)
+        self.add_listener(LevelDBEvent.FLUSH, self.do_flush)
 
         self.status = LevelDBStatus.OPENED
 
@@ -45,8 +50,9 @@ class LevelDB(EventDispatcher):
         return cls(file, options)
 
     def init(self):
+        self.file.seek(os.SEEK_SET)
         for line in self.file:
-            print(line)
+            self.current_pos += 1
             self.lines.update(deserialize(line))
 
     def get(self, key):
@@ -54,6 +60,8 @@ class LevelDB(EventDispatcher):
 
     def put(self, key, value):
         self.buffer[key] = value
+        if len(self.buffer.items()) > 10:
+            self.dispatch(LevelDBEvent.FLUSH)
 
     def do_flush(self):
         self.lines.update(self.buffer)
