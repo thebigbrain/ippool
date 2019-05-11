@@ -9,7 +9,7 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-# BOT_NAME = 'proxylist'
+BOT_NAME = 'proxylist'
 
 SPIDER_MODULES = ['proxylist.spiders']
 NEWSPIDER_MODULE = 'proxylist.spiders'
@@ -72,7 +72,7 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 ITEM_PIPELINES = {
     # 'proxylist.pipelines.ProxylistPipeline': 300,
     # 'proxylist.pipelines.ElasticSearchPipeline': 301,
-    'proxylist.pipelines.LevelDBPipeline': 300
+    'proxylist.pipelines.LevelDBPipeline': 301
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

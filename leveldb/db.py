@@ -46,6 +46,9 @@ class LevelDB(EventDispatcher):
 
     @classmethod
     def open(cls, file_name, options=None):
+        if not os.path.exists(file_name):
+            dirname = os.path.dirname(file_name)
+            os.mkdir(dirname)
         file = open(file_name, 'a+b')
         return cls(file, options)
 
