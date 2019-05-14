@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import time
-
+import random
 import scrapy
 from bs4 import BeautifulSoup
 from scrapy.spiders import CrawlSpider
@@ -55,8 +55,9 @@ class XicidailiSpider(CrawlSpider):
     allowed_domains = ['xicidaili.com']
     start_urls = ['https://www.xicidaili.com/nn']
 
-    current_page = 1
-    total_pages = 0
+    current_page = 0
+    total_pages = 10
+    max_total_pages = 0
 
     def parse(self, response):
         ip_list = parse_ip_list(response)
@@ -64,16 +65,22 @@ class XicidailiSpider(CrawlSpider):
             yield item
 
         has_more = self.parse_pagination(response)
-        time.sleep(5)
         if has_more:
-            yield scrapy.Request('https://www.xicidaili.com/nn/%i' % self.current_page, self.parse)
+            yield scrapy.Request(self.get_url(), self.parse)
+
+    def get_url(self):
+        if self.current_page == 0:
+            url = 'https://www.xicidaili.com/nn'
+        else:
+            url = 'https://www.xicidaili.com/nn/%s' % random.randint(1, self.max_total_pages)
+        return url
 
     def parse_pagination(self, response):
         html_pagination = response.css('.pagination').get()
         soup = BeautifulSoup(html_pagination, 'html.parser')
 
-        if not self.total_pages:
-            self.total_pages = int(soup.select('.next_page')[0].find_previous_sibling().get_text())
+        if not self.max_total_pages:
+            self.max_total_pages = int(soup.select('.next_page')[0].find_previous_sibling().get_text())
 
-        self.current_page = self.current_page + 1
+        self.current_page += 1
         return self.current_page < self.total_pages

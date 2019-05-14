@@ -9,7 +9,7 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'proxylist'
+# BOT_NAME = 'proxylist'
 
 SPIDER_MODULES = ['proxylist.spiders']
 NEWSPIDER_MODULE = 'proxylist.spiders'
@@ -17,14 +17,14 @@ NEWSPIDER_MODULE = 'proxylist.spiders'
 ES_HOST = '192.168.99.100'
 ES_PORT = 9200
 
-LEVELDB_FILENAME = '/data/leveldb/ippool.ldb'
+LEVELDB_FILENAME = '../data/leveldb/ippool.ldb'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) ' \
              'Chrome/73.0.3683.103 Safari/537.36'
 
 # Obey robots.txt rules
-# ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32

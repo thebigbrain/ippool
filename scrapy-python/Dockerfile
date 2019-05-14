@@ -7,6 +7,6 @@ WORKDIR /app
 #ADD pkg/my-package-2/pubspec.yaml /project/pkg/my-package-2/
 
 # Template for adding the application and local packages.
-ADD . /app
+ADD .. /app
 
 ENTRYPOINT ["/usr/local/bin/python", "/app/tools/crawl.py"]

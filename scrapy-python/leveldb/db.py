@@ -46,9 +46,10 @@ class LevelDB(EventDispatcher):
 
     @classmethod
     def open(cls, file_name, options=None):
-        if not os.path.exists(file_name):
+        file_name = os.path.abspath(file_name)
+        if not os.path.exists(os.path.dirname(file_name)):
             dirname = os.path.dirname(file_name)
-            os.mkdir(dirname)
+            os.makedirs(dirname)
         file = open(file_name, 'a+b')
         return cls(file, options)
 
@@ -66,7 +67,7 @@ class LevelDB(EventDispatcher):
         if len(self.buffer.items()) > 10:
             self.dispatch(LevelDBEvent.FLUSH)
 
-    def do_flush(self):
+    def do_flush(self, evt):
         self.lines.update(self.buffer)
         buffer = []
         for (k, v) in self.buffer.items():
@@ -76,5 +77,5 @@ class LevelDB(EventDispatcher):
 
     def close(self):
         self.status = LevelDBStatus.CLOSED
-        self.do_flush()
+        self.do_flush(None)
         self.file.close()
